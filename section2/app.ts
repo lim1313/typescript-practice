@@ -1,44 +1,80 @@
-// object
-const person: {
-  name: string;
-  age: number;
-} = {
-  name: 'max',
-  age: 30,
-};
+//TODO union 유니온
+{
+  function combine(input1: number | string, input2: number | string) {
+    //타입에 따른 런타임 확인이 필요한 경우 다음과 같이 할 수 있다.
+    let result;
+    if (typeof input1 === 'number' && typeof input2 === 'number') {
+      result = input1 + input2;
+    } else {
+      result = input1.toString() + input2.toString();
+    }
+    return result;
+  }
 
-console.log(person.name);
+  const combineAges = combine(30, 26);
+  console.log(combineAges);
 
-// array
-const person1: {
-  name: string;
-  age: number;
-  hobbies: string[];
-} = {
-  name: 'max',
-  age: 30,
-  hobbies: ['sports', 'cooking'],
-};
+  const combineNames = combine('max', 'anna');
+  console.log(combineNames);
+}
 
-//! 타입 추론
-const person2 = {
-  name: 'max',
-  age: 30,
-  hobbies: ['sports', 'cooking', 3],
-};
+//TODO literal type
+{
+  function combine2(
+    input1: number | string,
+    input2: number | string,
+    resultConversion: 'as-number' | 'as-text'
+  ) {
+    let result;
+    if (
+      (typeof input1 === 'number' && typeof input2 === 'number') ||
+      resultConversion === 'as-number'
+    ) {
+      result = +input1 + +input2;
+    } else {
+      result = input1.toString() + input2.toString();
+    }
+    return result.toString();
+  }
 
-let favoritesports: string[];
-favoritesports = ['sports', 'running'];
+  const combineAges = combine2(30, 26, 'as-number');
+  console.log(combineAges);
 
-let favoritesports2: any[];
-favoritesports2 = ['sports', 1, 3, true, { name: 'ye' }];
+  const combineStingAges = combine2('30', '26', 'as-number');
+  console.log(combineStingAges);
 
-let favoritesports3: (string | number)[];
-favoritesports3 = ['sports', 1, 3];
+  const combineNames = combine2('max', 'anna', 'as-text');
+  console.log(combineNames);
+}
 
-console.log(person2.hobbies); // => hobbies: (string | number)[]
+//TODO type alias 타입 별칭
+{
+  type Combinable = number | string;
+  type ConversionDescriptor = 'as-number' | 'as-text';
 
-for (const hobby of person2.hobbies) {
-  //* console.log(hobby.toUpperCase());
-  // 타입 추론으로 number 타입이 있기 때문에 toUpperCase error가 발생
+  function combine3(
+    input1: Combinable,
+    input2: Combinable,
+    resultConversion: ConversionDescriptor
+  ) {
+    let result;
+    if (
+      (typeof input1 === 'number' && typeof input2 === 'number') ||
+      resultConversion === 'as-number'
+    ) {
+      result = +input1 + +input2;
+    } else {
+      result = input1.toString() + input2.toString();
+    }
+    return result.toString();
+  }
+
+  const combineAges = combine2(30, 26, 'as-number');
+  console.log(combineAges);
+
+  const combineStingAges = combine2('30', '26', 'as-number');
+  console.log(combineStingAges);
+
+  const combineNames = combine2('max', 'anna', 'as-text');
+  console.log(combineNames);
 }
