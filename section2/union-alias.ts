@@ -69,12 +69,12 @@
     return result.toString();
   }
 
-  const combineAges = combine2(30, 26, 'as-number');
-  console.log(combineAges);
+  //   const combineAges = combine2(30, 26, 'as-number');
+  //   console.log(combineAges);
 
-  const combineStingAges = combine2('30', '26', 'as-number');
-  console.log(combineStingAges);
+  //   const combineStingAges = combine2('30', '26', 'as-number');
+  //   console.log(combineStingAges);
 
-  const combineNames = combine2('max', 'anna', 'as-text');
-  console.log(combineNames);
+  //   const combineNames = combine2('max', 'anna', 'as-text');
+  //   console.log(combineNames);
 }
