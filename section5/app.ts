@@ -1,9 +1,12 @@
 class Department {
-  public name: string;
-  private employees: string[] = [];
+  protected employees: string[] = [];
+  constructor(protected readonly id: string, public name: string) {}
 
-  constructor(n: string) {
-    this.name = 'helo';
+  //static 프로퍼티 or 메소드
+  static fiscalYear = '2020';
+
+  static createEmployee(name: string) {
+    return { name: name };
   }
 
   describe(this: Department) {
@@ -20,21 +23,79 @@ class Department {
   }
 }
 
-const accounting = new Department('Accounting');
+class ITDepartment extends Department {
+  admins: string[];
 
-accounting.addEmployee('max');
-accounting.addEmployee('manu');
+  constructor(id: string, admins: string[]) {
+    super(id, 'IT');
+    this.admins = admins;
+  }
+}
 
-// 이렇게 array에 추가할 수 있지만, class를 사용하는 방법은 확실한 한가지로 정하고 다른 방법은
-// 가능하지 않도록 해야한다.
-// 규모가 큰 팀에서 일하면 사람마다 다른 방법을 사용할 수 있기 때문이다.
-// 따라서 클래스 외부에서 employees에 접근하는 것을 허용해서는 안된다.
-// private 설정으로 더이상 이렇게 접근할 수 없다
-//! accounting.employees[2] = 'Anna';
+class AccountingDepartment extends Department {
+  private lastReport: string;
 
-accounting.describe(); // => deparment : Accounting
-accounting.printEmployeeInformation();
+  // lastReport가 private이기 때문에 외부에서 접근하지 못하지만,
+  // getter을 통해 접근할 수 있도록 한다.
+  get mostRecentReport() {
+    if (this.lastReport) {
+      return this.lastReport;
+    }
+    console.log(this.reports);
+    return this.lastReport;
+  }
+
+  set mostRecentReport(value: string) {
+    if (!value) throw new Error('pass in a valid value');
+    this.addReport(value);
+  }
+
+  constructor(id: string, private reports: string[]) {
+    super(id, 'Accounting');
+    this.lastReport = reports[0];
+  }
+
+  addEmployee(name: string) {
+    if (name === 'max') return;
+    this.employees.push(name);
+  }
+
+  addReport(text: string) {
+    this.reports.push(text);
+    console.log(this.reports);
+  }
+
+  printGetReports() {
+    console.log(this.reports);
+  }
+}
+
+const department = new Department('d1', 'Department');
+const it = new ITDepartment('d1', ['max']);
+
+it.addEmployee('max');
+it.addEmployee('manu');
+
+console.log(it);
+
+// department.employees[2] = 'Anna'; //=> error (private 속성 때문)
 
 // const accoutningCopy = { describe: accounting.describe };
 // const accoutningCopy = { name: 'copy', describe: accounting.describe };
 // accoutningCopy.describe(); // => deparment : copy
+
+department.describe(); // => deparment : Accounting
+department.printEmployeeInformation();
+console.log(department.name); //=> 정상 동작 (public 속성 때문)
+
+const accounting = new AccountingDepartment('d2', []);
+accounting.mostRecentReport = 'newOne';
+accounting.addReport('Something is');
+
+console.log(accounting.mostRecentReport);
+// accounting.reports.push('something..'); // => error
+// console.log(accounting.reports); // => error (private 속성 때문)
+
+//static 프로퍼티, 메소드 호출
+const employee1 = Department.createEmployee('te');
+console.log('employee1', employee1, Department.fiscalYear); //=> employee1 {name: 'te'} 2020
