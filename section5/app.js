@@ -8,8 +8,9 @@ class Department {
     static createEmployee(name) {
         return { name: name };
     }
+    // abstract describe(this: Department): void;
     describe() {
-        console.log('deparment : ' + this.name);
+        console.log('This is :' + this.id);
     }
     addEmployee(employee) {
         this.employees.push(employee);
@@ -47,6 +48,15 @@ class AccountingDepartment extends Department {
             throw new Error('pass in a valid value');
         this.addReport(value);
     }
+    static getInstance() {
+        if (AccountingDepartment.instance) {
+            return this.instance;
+        }
+        this.instance = new AccountingDepartment('d2', []);
+    }
+    // describe() {
+    //   console.log('This is AccountingDepartment');
+    // }
     addEmployee(name) {
         if (name === 'max')
             return;
@@ -60,6 +70,8 @@ class AccountingDepartment extends Department {
         console.log(this.reports);
     }
 }
+// Department를 추상화(abstract)했기 때문에 인스턴스화 할 수없다.
+// const department = new Department('d1', 'Department');
 const department = new Department('d1', 'Department');
 const it = new ITDepartment('d1', ['max']);
 it.addEmployee('max');
@@ -72,10 +84,12 @@ console.log(it);
 department.describe(); // => deparment : Accounting
 department.printEmployeeInformation();
 console.log(department.name); //=> 정상 동작 (public 속성 때문)
-const accounting = new AccountingDepartment('d2', []);
-accounting.mostRecentReport = 'newOne';
-accounting.addReport('Something is');
-console.log(accounting.mostRecentReport);
+// const accounting = new AccountingDepartment('d2', []);
+// accounting.mostRecentReport = 'newOne';
+// accounting.addReport('Something is');
+const accounting = AccountingDepartment.getInstance();
+const accounting2 = AccountingDepartment.getInstance();
+// console.log(accounting.mostRecentReport);
 // accounting.reports.push('something..'); // => error
 // console.log(accounting.reports); // => error (private 속성 때문)
 //static 프로퍼티, 메소드 호출

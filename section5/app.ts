@@ -9,10 +9,10 @@ class Department {
     return { name: name };
   }
 
+  // abstract describe(this: Department): void;
   describe(this: Department) {
-    console.log('deparment : ' + this.name);
+    console.log('This is :' + this.id);
   }
-
   addEmployee(employee: string) {
     this.employees.push(employee);
   }
@@ -30,10 +30,15 @@ class ITDepartment extends Department {
     super(id, 'IT');
     this.admins = admins;
   }
+
+  // describe() {
+  //   console.log('ITdepartment');
+  // }
 }
 
 class AccountingDepartment extends Department {
   private lastReport: string;
+  private static instance: AccountingDepartment;
 
   // lastReport가 private이기 때문에 외부에서 접근하지 못하지만,
   // getter을 통해 접근할 수 있도록 한다.
@@ -50,10 +55,21 @@ class AccountingDepartment extends Department {
     this.addReport(value);
   }
 
-  constructor(id: string, private reports: string[]) {
+  private constructor(id: string, private reports: string[]) {
     super(id, 'Accounting');
     this.lastReport = reports[0];
   }
+
+  static getInstance() {
+    if (AccountingDepartment.instance) {
+      return this.instance;
+    }
+    this.instance = new AccountingDepartment('d2', []);
+  }
+
+  // describe() {
+  //   console.log('This is AccountingDepartment');
+  // }
 
   addEmployee(name: string) {
     if (name === 'max') return;
@@ -70,6 +86,8 @@ class AccountingDepartment extends Department {
   }
 }
 
+// Department를 추상화(abstract)했기 때문에 인스턴스화 할 수없다.
+// const department = new Department('d1', 'Department');
 const department = new Department('d1', 'Department');
 const it = new ITDepartment('d1', ['max']);
 
@@ -88,11 +106,14 @@ department.describe(); // => deparment : Accounting
 department.printEmployeeInformation();
 console.log(department.name); //=> 정상 동작 (public 속성 때문)
 
-const accounting = new AccountingDepartment('d2', []);
-accounting.mostRecentReport = 'newOne';
-accounting.addReport('Something is');
+// const accounting = new AccountingDepartment('d2', []);
+// accounting.mostRecentReport = 'newOne';
+// accounting.addReport('Something is');
 
-console.log(accounting.mostRecentReport);
+const accounting = AccountingDepartment.getInstance();
+const accounting2 = AccountingDepartment.getInstance();
+
+// console.log(accounting.mostRecentReport);
 // accounting.reports.push('something..'); // => error
 // console.log(accounting.reports); // => error (private 속성 때문)
 
