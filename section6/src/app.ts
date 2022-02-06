@@ -137,3 +137,35 @@ const errorBag: ErrorContainer = {
   address: 'seoul',
   username: 'capital',
 };
+
+//TODO 함수 오버로드
+function add2(a: string, b: string): string;
+function add2(a: number, b: number): number;
+function add2(a: number, b: string): string;
+function add2(a: string, b: number): string;
+
+function add2(a: Combinable, b: Combinable) {
+  if (typeof a === 'string' || typeof b === 'string') {
+    return a.toString() + b.toString();
+  }
+  return a + b;
+}
+
+const result = add2('max', ' schwarz');
+result.split(' ');
+
+//TODO 선택적 체이닝
+const fetchedUserData = {
+  id: 'u1',
+  name: 'max',
+  job: { title: 'ceo', description: 'my company' },
+};
+
+console.log(fetchedUserData?.job?.title);
+
+const userInput = false;
+const storeData = userInput || 'Default';
+const storeData2 = userInput ?? 'Default';
+
+console.log(storeData); //=> Default
+console.log(storeData2); //=> ''(빈문자열)

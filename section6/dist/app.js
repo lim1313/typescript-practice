@@ -1,4 +1,5 @@
 "use strict";
+var _a;
 // interface ElevatedEmployee extends Admin, Employee {}
 const e1 = {
     name: 'max',
@@ -76,3 +77,23 @@ const errorBag = {
     address: 'seoul',
     username: 'capital',
 };
+function add2(a, b) {
+    if (typeof a === 'string' || typeof b === 'string') {
+        return a.toString() + b.toString();
+    }
+    return a + b;
+}
+const result = add2('max', ' schwarz');
+result.split(' ');
+//TODO 선택적 체이닝
+const fetchedUserData = {
+    id: 'u1',
+    name: 'max',
+    job: { title: 'ceo', description: 'my company' },
+};
+console.log((_a = fetchedUserData === null || fetchedUserData === void 0 ? void 0 : fetchedUserData.job) === null || _a === void 0 ? void 0 : _a.title);
+const userInput = false;
+const storeData = userInput || 'Default';
+const storeData2 = userInput !== null && userInput !== void 0 ? userInput : 'Default';
+console.log(storeData); //=> Default
+console.log(storeData2); //=> ''(빈문자열)
