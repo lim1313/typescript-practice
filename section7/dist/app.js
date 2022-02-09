@@ -42,4 +42,15 @@ const textStorage = new DataStorage();
 textStorage.addItem('one');
 const numberStorage = new DataStorage();
 numberStorage.addItem(12);
-// const objStorage = new DataStorage<object>();
+function createCourseGoal(title, description, date) {
+    let courseGoal = {};
+    courseGoal.title = title;
+    courseGoal.description = description;
+    courseGoal.completeUntil = date;
+    // return courseGoal;
+    //=> Error (courseGoal이 일반 CourseGold 타입이 아닌 CourseGold의 partial 타입이기 때문이다.)
+    // 때문에 CourseGoal로 형 변환하여 해결할 수 있다.
+    return courseGoal;
+}
+const names = ['max', 'sports'];
+// names.push('manu'); //=> Error
