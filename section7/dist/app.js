@@ -23,3 +23,23 @@ function extractAndConvert(obj, key) {
 }
 // extractAndConvert({}, 'name') // => Error
 extractAndConvert({ name: 'max' }, 'name'); // => Error
+class DataStorage {
+    constructor() {
+        this.data = [];
+    }
+    addItem(item) {
+        this.data.push(item);
+    }
+    removeItem(item) {
+        this.data.splice(this.data.indexOf(item), 1);
+    }
+    getItems() {
+        return [...this.data];
+    }
+}
+const textStorage = new DataStorage();
+// textStorage.addItem(10); //=> Error
+textStorage.addItem('one');
+const numberStorage = new DataStorage();
+numberStorage.addItem(12);
+// const objStorage = new DataStorage<object>();
